@@ -13,15 +13,19 @@ class MyApp extends StatelessWidget {
             appBar: AppBar(
               title: Text('Demo Daily Expense App'),
             ),
-            body: Column(
-              children: [
-                Container(
-                  child: Card(
-                    child: Text('Chart'),
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    child: Card(
+                      child: Text('Chart'),
+                    ),
                   ),
-                ),
-                userTrans()
-              ],
+                  userTrans()
+                ],
+              ),
             )));
   }
 }

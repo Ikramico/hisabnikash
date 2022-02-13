@@ -6,6 +6,15 @@ class newTr extends StatelessWidget {
   final title = TextEditingController();
   final amount = TextEditingController();
 
+  void Submit() {
+    final Etitle = title;
+    final Eamount = double.parse(amount.text.trim());
+    if (Etitle == '' || Eamount <= 0) {
+      return;
+    }
+    addTx(Etitle, Eamount);
+  }
+
   newTr(this.addTx);
   @override
   Widget build(BuildContext context) {
@@ -14,17 +23,20 @@ class newTr extends StatelessWidget {
         Center(
           child: TextField(
             decoration: InputDecoration(labelText: 'Title'),
+            controller: title,
+            keyboardType: TextInputType.number,
+            onSubmitted: (_) => Submit,
           ),
         ),
         Center(
           child: TextField(
             decoration: InputDecoration(labelText: 'amount'),
+            controller: amount,
+            onSubmitted: (_) => Submit,
           ),
         ),
         TextButton(
-          onPressed: () {
-            addTx(title.text, double.parse(amount.text));
-          },
+          onPressed: Submit,
           child: Text('Add Transaction'),
         )
       ]),
