@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 import 'tra.dart';
 
-class newTr extends StatelessWidget {
+class newTr extends StatefulWidget {
   final Function addTx;
+  newTr(this.addTx);
+
+  @override
+  State<newTr> createState() => _newTrState();
+}
+
+class _newTrState extends State<newTr> {
   final title = TextEditingController();
+
   final amount = TextEditingController();
 
   void Submit() {
-    final Etitle = title;
+    final Etitle = title.text;
     final Eamount = double.parse(amount.text.trim());
-    if (Etitle == '' || Eamount <= 0) {
+    if (Etitle.isEmpty || Eamount <= 0) {
       return;
     }
-    addTx(Etitle, Eamount);
+    widget.addTx(Etitle, Eamount);
+    Navigator.of(context).pop();
   }
 
-  newTr(this.addTx);
   @override
   Widget build(BuildContext context) {
     return Card(

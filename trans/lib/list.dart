@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'tra.dart';
 import 'package:intl/intl.dart';
-import 'us_tr.dart';
 
 class TransList extends StatelessWidget {
   final List<Trans> transactions;
@@ -20,7 +19,7 @@ class TransList extends StatelessWidget {
                     vertical: 20,
                   ),
                   child: Text(
-                    '\$${transactions[index].amount}',
+                    '\$${transactions[index].amount.toStringAsFixed(2)}',
                   ),
                 ),
                 Column(
