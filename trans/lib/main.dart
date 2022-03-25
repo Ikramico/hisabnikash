@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trans/list.dart';
 import 'package:trans/newtr.dart';
 import 'tra.dart';
+import 'chart.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,11 +15,20 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final List<Trans> _userTrans = [
-    Trans(
-        id: 'tx456', title: 'Radioactive', amount: 96.56, date: DateTime.now()),
-    Trans(id: 'tx982', title: 'Microwave', amount: 87.56, date: DateTime.now()),
-    Trans(id: 'tx743', title: 'Monolight', amount: 69.69, date: DateTime.now()),
+    // Trans(
+    //     id: 'tx456', title: 'Radioactive', amount: 96.56, date: DateTime.now()),
+    // Trans(id: 'tx982', title: 'Microwave', amount: 87.56, date: DateTime.now()),
+    // Trans(id: 'tx743', title: 'Monolight', amount: 69.69, date: DateTime.now()),
   ];
+  List<Trans> get _recentTrans {
+    return _userTrans.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    });
+  }
   void AddNew(String title, double amount) {
     final newTx = Trans(
         id: DateTime.now().toString(),
@@ -47,50 +57,60 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.grey,
+          accentColor: Colors.black,
+          fontFamily: 'Sicret',
+        ),
+        // colorScheme:
+        //     ThemeData().colorScheme.copyWith(secondary: Colors.black)),
         home: Scaffold(
-      appBar: AppBar(
-        title: Text('Demo Daily Expense App'),
-        actions: [
-          Builder(
-            builder: (BuildContext context) => Container(
-              child: IconButton(
-                // onPressed: () => addNewTr(context),
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context, builder: (context) => newTr(AddNew));
-                },
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 30,
+          appBar: AppBar(
+            title: Text('Demo Daily Expense App'),
+            actions: [
+              Builder(
+                builder: (BuildContext context) => Container(
+                  child: IconButton(
+                    // onPressed: () => addNewTr(context),
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) => newTr(AddNew));
+                    },
+                    icon: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                  margin: EdgeInsets.only(right: 20),
                 ),
               ),
-              margin: EdgeInsets.only(right: 20),
+            ],
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: double.infinity,
+                  child: Card(
+                    child: Text('Your Expense'),
+                  ),
+                ),
+                Chart(_recentTrans),
+                TransList(_userTrans)
+              ],
             ),
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: double.infinity,
-              child: Card(
-                child: Text('Chart'),
-              ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: Builder(
+            builder: (BuildContext context) => FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () => addNewTr(context),
             ),
-            TransList(_userTrans)
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Builder(
-        builder: (BuildContext context) => FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () => addNewTr(context),
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 }

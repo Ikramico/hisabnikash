@@ -18,6 +18,15 @@ class TransList extends StatelessWidget {
                     horizontal: 15,
                     vertical: 20,
                   ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                    color: Theme.of(context).primaryColorDark,
+                    width: 3,
+                  )),
                   child: Text(
                     '\$${transactions[index].amount.toStringAsFixed(2)}',
                   ),
